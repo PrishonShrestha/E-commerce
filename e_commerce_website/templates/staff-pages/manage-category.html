@@ -1,0 +1,129 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block extra-links %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+{% endblock extra-links %}
+
+
+
+{% block content %}
+<h1>Manage category</h1>
+{% comment %} <form method="POST">
+    {% csrf_token %}
+{{form.as_p}}
+{{form.media}}
+<input type="submit">
+</form> {% endcomment %}
+
+<!--Category list table-->
+<div class='row justify-content-md-center'>
+  <div class="col-md-9 mb-4">
+    <!-- Button trigger modal -->
+    <div class="float-right">
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategory">
+          Add New Category
+      </button>
+    </div>
+    <br>
+
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Image</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in category_list %}
+        <tr>
+          
+          <th scope="row">{{category.id}}</th>
+          <td>{{category.c_name}}</td>
+          <td>{{category.c_description}}</td>
+          {% comment %} {% for  in  %}{% endfor %} {% endcomment %}
+          {% if category.c_img %}
+            <td><img src="{{category.c_img.url}}" width="100" height="100"/></td>
+          {% endif %}
+          <td>
+
+
+            <a href="{% url 'edit-category' category.id%}">
+              <button type="button" class="btn btn-success">Edit</button> 
+            </a>
+            <a href="{% url 'delete-category' category.id %}">
+              <button type="button"class="btn btn-danger">Delete</button>
+            </a>
+
+          </td>
+          
+          
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<br>
+<hr>
+
+{% comment %} <div>
+    {% if form.errors %}
+        <div class="alert alert-danger">
+            {% for title, error  in form.errors.items %}
+                <ul>{{title}} : {{error|striptags}}</ul>
+            {% endfor %}
+            </div>
+    {% endif %}
+</div> {% endcomment %}
+  <!-- Modal -->
+  <div class="modal fade" id="addCategory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+            <!--form-->
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="categoryName">Category Name</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" name="c_name">
+                </div>
+                <div class="form-group">
+                    <label for="categoryDescription">Category Description</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="c_description">
+                </div>
+                <div class="form-group">
+                    <label for="categoryImage" class="form-label">Category Image</label>
+                    <input required name="c_img" multiple class="form-control" type="file" id="formFile" >
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                </div>
+                {{form.errors}}
+                  
+            </form>
+          
+
+
+
+        </div>
+        
+      </div>
+    </div>
+  </div> 
+
+ 
+{% endblock content %}
