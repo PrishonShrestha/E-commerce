@@ -106,7 +106,7 @@
                 <div class="product text-center">
                   <div class="mb-3 position-relative">
                     <div class="badge text-white bg-"></div>
-                      <a class="d-block" href="detail.html">
+                      <a class="d-block" href="{% url 'product-detail' p.id %}">
                         {% if p.p_image %}
                         <img class="img-fluid w-100" src="{{p.p_image.url}}" alt="...">
                         {% endif %}

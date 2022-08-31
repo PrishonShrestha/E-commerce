@@ -17,6 +17,7 @@ def shopPage(request):
     context ={'category':category, 'products':products}
     return render(request, 'pages/shop.html', context)
 
+### Search products by category
 def filter_shop(request, id):
     category = Category.objects.all().order_by('c_name')
     #products = Product.objects.all().order_by('id')
@@ -24,10 +25,13 @@ def filter_shop(request, id):
     context ={'p':p, 'category':category}
     return render(request, 'pages/filter-shop.html', context)
 
+# View Product details
 def product_detail(request, p_id):
     product_detail = Product.objects.get(id=p_id)
+    #print(product_detail.p_category_id)
+    related_products = Product.objects.filter(p_category_id=product_detail.p_category_id)[:4]
 
-    context = {'pd':product_detail}
+    context = {'pd':product_detail, 'related_products':related_products}
     return render(request, 'pages/detail.html', context)
 
 

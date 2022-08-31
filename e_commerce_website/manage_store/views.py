@@ -2,10 +2,14 @@ from unicodedata import category
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth import get_user_model
 
 from .forms import CreateCategoryForm, CreateProductsForm
 from .models import Category, Product
 import os
+from django.contrib.auth.models import User
+
+User = get_user_model()
 
 
 @permission_required('is_staff')
@@ -99,4 +103,19 @@ def edit_products(request, p_id):
 
     context ={'form':form, 'product':product, 'category':category}
     return render(request,'staff-pages/edit-products.html', context)
+
+### Manage Customer
+@permission_required('is_staff')
+def manage_customers(request):
+    customer_list = User.objects.filter(is_staff=False).order_by('-id')
+    context = {'customers':customer_list}
+    return render(request, 'staff-pages/manage-customers.html', context)
+
+
+### Manage Staffs
+@permission_required('is_staff')
+def manage_staffs(request):
+    staff_list = User.objects.filter(is_staff=True).order_by('-id')
+    context = {'staffs':staff_list}
+    return render(request, 'staff-pages/manage-staffs.html', context)
 

@@ -6,3 +6,4 @@ class User(AbstractUser):
     email = models.EmailField(max_length=100, unique=True)
     contact = models.CharField(max_length=20, unique=True, null=True)
     
+    

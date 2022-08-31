@@ -13,4 +13,11 @@ urlpatterns = [
     path('manageproducts/', views.manage_product, name='manage-products'),
     path('deleteproducts/<int:p_id>', views.delete_products, name="delete-products"),
     path('manageproducts/editproducts/<int:p_id>', views.edit_products, name='edit-products'),
+
+
+    ###### Manage Customers
+    path('managecustomers/', views.manage_customers, name='manage-customers'),
+
+    ###### Manage Staffs
+    path('managestaffs/', views.manage_staffs, name='manage-staffs'),
 ]

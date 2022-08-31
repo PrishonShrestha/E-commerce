@@ -14,7 +14,7 @@ class Category(models.Model):
 class Product(models.Model):
     p_name = models.CharField(max_length=200)
     p_code = models.CharField(max_length=50, unique=True)
-    p_description = models.CharField(max_length=50)
+    p_description = models.CharField(max_length=500)
     p_image = models.ImageField(null=True, blank=True)
     p_stock = models.PositiveIntegerField()
     p_price = models.DecimalField(max_digits=10, decimal_places=2)
