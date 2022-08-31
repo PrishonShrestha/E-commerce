@@ -10,7 +10,7 @@
               <!-- Link--><a class="nav-link active" href="{% url 'home' %}">Home</a>
             </li>
             <li class="nav-item">
-              <!-- Link--><a class="nav-link" href="shop.html">Shop</a>
+              <!-- Link--><a class="nav-link" href="{% url 'shop' %}">Shop</a>
             </li>
             <li class="nav-item">
               <!-- Link--><a class="nav-link" href="detail.html">Product detail</a>
@@ -49,11 +49,18 @@
 
           <ul class="navbar-nav ms-auto">               
             <li class="nav-item"><a class="nav-link" href="{% url 'cart' %}"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal">(2)</small></a></li>
-            <li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-user me-1 text-gray fw-normal"></i>{{user}}</a></li>
-            
-            
+            {% comment %} <li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-user me-1 text-gray fw-normal"></i>{{user}}</a></li> {% endcomment %}
             {% if user.is_authenticated %}
-            <li class="nav-item"><a class="nav-link" href=" {% url 'logout' %}"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Logout</a></li>
+            <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user me-1 text-gray fw-normal"></i>{{user}}</a>
+              <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
+                <a class="dropdown-item border-0 transition-link" href=" {% url 'logout' %}"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Logout</a>
+                <a class="dropdown-item border-0 transition-link" href="shop.html"><i class="bi bi-calendar-heart"></i>My Orders</a>
+                <a class="dropdown-item border-0 transition-link" href="detail.html" ><i class="bi bi-bag-check"></i>My Cart</a>
+              </div>
+            </li>
+            
+            {% comment %} {% if user.is_authenticated %} {% endcomment %}
+            {% comment %} <li class="nav-item"><a class="nav-link" href=" {% url 'logout' %}"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Logout</a></li> {% endcomment %}
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Login</a></li>
             {% endif %}

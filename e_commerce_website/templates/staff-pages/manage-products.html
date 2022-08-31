@@ -66,10 +66,10 @@
             <td>{{product.p_updated_date}}</td>
 
             <td>
-                <a href="#">
+                <a href="{% url 'edit-products' product.id%}">
                     <button type="button" class="btn btn-success">Edit</button> 
                 </a>
-                <a href="#">
+                <a href="{% url 'delete-products' product.id %}">
                     <button type="button"class="btn btn-danger">Delete</button>
                 </a>
 

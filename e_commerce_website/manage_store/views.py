@@ -65,8 +65,6 @@ def manage_product(request):
             #print("Is valid")
             form.save()
             return redirect('manage-products')
-        else:
-            return HttpResponse("Failed to add product")
 
     products = Product.objects.all()
     category = Category.objects.all()
@@ -74,5 +72,31 @@ def manage_product(request):
     return render(request, 'staff-pages/manage-products.html', context)
     
 
+### Delete products
+@permission_required('is_staff')
+def delete_products(request, p_id):
+    queryset = Product.objects.get(pk=p_id)
+    if queryset.p_image:
+        queryset.p_image.delete()
+    queryset.delete()
+    return redirect('manage-products')
 
+### Edit/Update products
+@permission_required('is_staff')
+def edit_products(request, p_id):
+    product = Product.objects.get(pk=p_id)
+    category = Category.objects.all()
+
+    form = CreateProductsForm(instance=product)
+
+    if request.method == 'POST':
+        form = CreateProductsForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('manage-products')
+
+
+
+    context ={'form':form, 'product':product, 'category':category}
+    return render(request,'staff-pages/edit-products.html', context)
 

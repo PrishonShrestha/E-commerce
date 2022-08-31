@@ -45,10 +45,10 @@ def logoutUser(request):
     logout(request)
     return redirect('login')
 
-def homePage(request):
-    return render(request, 'pages/index.html')
+# def homePage(request):
+#     return render(request, 'pages/index.html')
 
-@login_required(login_url='login')
-def cartPage(request):
-    return render(request, 'pages/cart.html')
+# @login_required(login_url='login')
+# def cartPage(request):
+#     return render(request, 'pages/cart.html')
     

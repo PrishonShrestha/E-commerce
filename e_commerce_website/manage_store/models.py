@@ -20,7 +20,7 @@ class Product(models.Model):
     p_price = models.DecimalField(max_digits=10, decimal_places=2)
     p_uploaded_date = models.DateTimeField(auto_now_add=True)
     p_updated_date = models.DateTimeField(auto_now=True)
-    p_category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    p_category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=False)
 
     class Meta:
         ordering = ['-id']

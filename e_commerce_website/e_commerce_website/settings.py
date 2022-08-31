@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     
     'user_mgmt',
     'manage_store',
+    'store_app',
 ]
 
 MIDDLEWARE = [
