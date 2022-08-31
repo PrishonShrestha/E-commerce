@@ -1,7 +1,9 @@
 from django.shortcuts import render
-
+from .models import Order, OrderProduct, ShippingDetails
 from manage_store.models import Category, Product
 from django.contrib.auth.decorators import login_required, permission_required
+
+from user_mgmt.decorators import unauthenticated_user
 
 def homePage(request):
     category = Category.objects.all()[:3]
@@ -37,4 +39,24 @@ def product_detail(request, p_id):
 
 @login_required(login_url='login')
 def cartPage(request):
-    return render(request, 'pages/cart.html')
+    customer = request.user
+    order, created = Order.objects.get_or_create(customer_id = customer)
+    products = order.orderproduct_set.all()
+    #print(products)
+
+    context = {'products':products, 'order':order}
+    return render(request, 'pages/cart.html', context)
+
+
+def checkoutPage(request):
+    if request.user.is_authenticated:
+        customer = request.user
+        order, created = Order.objects.get_or_create(customer_id = customer)
+        products = order.orderproduct_set.all()
+    else:
+        products = []
+        order = {'get_cart_total':0, 'get_cart_products':0}
+    #print(products)
+
+    context = {'products':products, 'order':order}
+    return render(request, 'pages/checkout.html', context)

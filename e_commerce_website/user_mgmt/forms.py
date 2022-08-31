@@ -13,4 +13,9 @@ class CreateUserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'gender', 'email', 'contact', 'password1', 'password2', 'is_staff']
+        fields = ['first_name', 'last_name', 'username', 'gender', 'email', 'contact', 'password1', 'password2', 'is_staff', 'is_superuser']
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'gender', 'email', 'contact']

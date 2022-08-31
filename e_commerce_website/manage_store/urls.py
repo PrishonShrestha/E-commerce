@@ -20,4 +20,6 @@ urlpatterns = [
 
     ###### Manage Staffs
     path('managestaffs/', views.manage_staffs, name='manage-staffs'),
+    path('deletestaffs/<int:s_id>', views.delete_staffs, name="delete-staffs"),
+    path('editstaffs/<int:s_id>', views.edit_staffs, name='edit-staffs'),
 ]

@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth import get_user_model
 
+from user_mgmt.forms import CreateUserForm, UserUpdateForm
+
 from .forms import CreateCategoryForm, CreateProductsForm
 from .models import Category, Product
 import os
@@ -115,7 +117,40 @@ def manage_customers(request):
 ### Manage Staffs
 @permission_required('is_staff')
 def manage_staffs(request):
+
+    form = CreateUserForm
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        
+        if form.is_valid():
+            #print("Is valid")
+            form.save()
+            return redirect('manage-staffs')
     staff_list = User.objects.filter(is_staff=True).order_by('-id')
-    context = {'staffs':staff_list}
+    context = {'staffs':staff_list, 'form':form}
     return render(request, 'staff-pages/manage-staffs.html', context)
 
+@permission_required('is_staff')
+def delete_staffs(request, s_id):
+    queryset = User.objects.get(id=s_id)
+    queryset.delete()
+    return redirect('manage-staffs')
+
+
+### Edit/Update staffs
+@permission_required('is_staff')
+def edit_staffs(request, s_id):
+    staff = User.objects.get(pk=s_id)
+
+    form = UserUpdateForm(instance=staff)
+
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=staff)
+        if form.is_valid():
+            form.save()
+            return redirect('manage-staffs')
+
+
+
+    context ={'form':form, 'staff':staff}
+    return render(request,'staff-pages/edit-staffs.html', context)
