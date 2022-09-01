@@ -185,7 +185,7 @@
                     <li class="d-flex align-items-center justify-content-between"><strong class="small fw-bold">{{product.product.p_name}}</strong><span class="text-muted small">${{product.price}}</span></li>
                     <li class="border-bottom my-2"></li>
                     {% endfor %}
-                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small fw-bold">Total Items</strong><span>{{order.get_cart_products}}</span></li>
+                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small fw-bold">Total Items</strong><span>{{total_products}}</span></li>
                     <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small fw-bold">Total Amount</strong><span>${{order.get_cart_total}}</span></li>
                   </ul>
                 </div>

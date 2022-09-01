@@ -67,7 +67,7 @@
             <div class="col-lg-8 mb-4 mb-lg-0">
               <!-- CART TABLE-->
               <div class="table-responsive mb-4">
-                {% for product in products %}
+                
                 <table class="table text-nowrap">
                   <thead class="bg-light">
                     <tr>
@@ -78,7 +78,9 @@
                       <th class="border-0 p-3" scope="col"> <strong class="text-sm text-uppercase"></strong></th>
                     </tr>
                   </thead>
+                  
                   <tbody class="border-0">
+                    {% for product in products %}
                     <tr>
                       <th class="ps-0 py-3 border-light" scope="row">
                         <div class="d-flex align-items-center">
@@ -93,14 +95,14 @@
                         </div>
                       </th>
                       <td class="p-3 align-middle border-light">
-                        <p class="mb-0 small">${{product.price}}</p>
+                        <p class="mb-0 small">${{product.product.p_price}}</p>
                       </td>
                       <td class="p-3 align-middle border-light">
                         <div class="border d-flex align-items-center justify-content-between px-3"><span class="small text-uppercase text-gray headings-font-family">Quantity</span>
                           <div class="quantity">
-                            <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
+                            <a data-product="{{product.product.id}}" data-action="remove" class="dec-btn p-0 update-cart"><i class="fas fa-caret-left"></i></a>
                             <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="{{product.quantity}}"/>
-                            <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
+                            <a data-product="{{product.product.id}}" data-action="add" class="dec-btn p-0 update-cart"><i class="fas fa-caret-right"></i></a>
                           </div>
                         </div>
                       </td>
@@ -132,9 +134,10 @@
                       </td> 
                       <td class="p-3 align-middle border-0"><a class="reset-anchor" href="#!"><i class="fas fa-trash-alt small text-muted"></i></a></td>
                     </tr> {% endcomment %}
+                    {% endfor %}
                   </tbody>
                 </table>
-                {% endfor %}
+                
               </div>
               <!-- CART NAV-->
               <div class="bg-light px-4 py-3">
@@ -150,7 +153,7 @@
                 <div class="card-body">
                   <h5 class="text-uppercase mb-4">Cart total</h5>
                   <ul class="list-unstyled mb-0">
-                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Total Products</strong><span class="text-muted small">{{order.get_cart_products}}</span></li>
+                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Total Products</strong><span class="text-muted small">{{total_products}}</span></li>
                     <li class="border-bottom my-2"></li>
                     <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Total Amount</strong><span>${{order.get_cart_total}}</span></li>
                     <li>

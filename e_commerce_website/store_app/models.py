@@ -2,12 +2,19 @@ from django.db import models
 from user_mgmt.models import User
 from manage_store.models import Product
 
-
+STATUS_CHOICES = (
+    ('Pending', 'Pending'),
+    ('Accepted', 'Accepted'),
+    ('Packed', 'Packed'),
+    ('On The Way', 'On The Way'),
+    ('Delivered', 'Delivered'),
+    ('Cancelled', 'Cancelled')
+)
 
 class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     o_date = models.DateTimeField(auto_now_add=True)
-    o_status = models.CharField(max_length=100)
+    o_status = models.CharField(max_length=100, choices=STATUS_CHOICES, default="Pending")
 
     def __str__(self):
         return str(self.id)

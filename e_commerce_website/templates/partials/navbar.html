@@ -51,7 +51,7 @@
           {% endif %}
 
           <ul class="navbar-nav ms-auto">               
-            <li class="nav-item"><a class="nav-link" href="{% url 'cart' %}"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal">(2)</small></a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'cart' %}"> <i class="fas fa-dolly-flatbed me-1 text-gray"></i>Cart<small class="text-gray fw-normal"> ({{total_products}})</small></a></li>
             {% comment %} <li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-user me-1 text-gray fw-normal"></i>{{user}}</a></li> {% endcomment %}
             {% if user.is_authenticated %}
             <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="pagesDropdown" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user me-1 text-gray fw-normal"></i>{{user}}</a>

@@ -3,7 +3,10 @@ from .models import Order, OrderProduct, ShippingDetails
 from manage_store.models import Category, Product
 from django.contrib.auth.decorators import login_required, permission_required
 
+from django.http import JsonResponse
 from user_mgmt.decorators import unauthenticated_user
+
+import json
 
 def homePage(request):
     category = Category.objects.all()[:3]
@@ -37,12 +40,16 @@ def product_detail(request, p_id):
     return render(request, 'pages/detail.html', context)
 
 
-@login_required(login_url='login')
+#@login_required(login_url='login')
 def cartPage(request):
-    customer = request.user
-    order, created = Order.objects.get_or_create(customer_id = customer)
-    products = order.orderproduct_set.all()
-    #print(products)
+    if request.user.is_authenticated:
+        customer = request.user.id
+        order, created = Order.objects.get_or_create(customer_id = customer)
+        products = order.orderproduct_set.all()
+        #print(products)
+    else:
+        products = []
+        order = {'get_cart_total':0, 'get_cart_products':0}
 
     context = {'products':products, 'order':order}
     return render(request, 'pages/cart.html', context)
@@ -60,3 +67,30 @@ def checkoutPage(request):
 
     context = {'products':products, 'order':order}
     return render(request, 'pages/checkout.html', context)
+
+
+def updateProduct(request):
+    data = json.loads(request.body)
+    productId = data['productId']
+    action = data['action']
+
+    print('Action: ', action)
+    print('ProductId: ', productId)
+
+    customer = request.user
+    product = Product.objects.get(id=productId)
+    order, created = Order.objects.get_or_create(customer_id = customer)
+    
+    orderProduct, create = OrderProduct.objects.get_or_create(order=order, product=product)
+    
+    if action == 'add':
+        orderProduct.quantity = (orderProduct.quantity + 1)
+    elif action == 'remove':
+        orderProduct.quantity = (orderProduct.quantity - 1)
+
+    orderProduct.save()
+
+    if orderProduct.quantity <= 0:
+        orderProduct.delete()
+
+    return JsonResponse('Item was added', safe=False)
