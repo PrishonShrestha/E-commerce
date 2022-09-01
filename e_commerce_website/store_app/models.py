@@ -15,6 +15,7 @@ class Order(models.Model):
     customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
     o_date = models.DateTimeField(auto_now_add=True)
     o_status = models.CharField(max_length=100, choices=STATUS_CHOICES, default="Pending")
+    o_placed = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return str(self.id)
@@ -43,7 +44,7 @@ class OrderProduct(models.Model):
 
     @property
     def get_total(self):
-        total = self.price * self.quantity
+        total = self.product.p_price * self.quantity
         return total
 
 class ShippingDetails(models.Model):

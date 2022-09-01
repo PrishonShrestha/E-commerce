@@ -58,7 +58,7 @@
               <div class="dropdown-menu mt-3 shadow-sm" aria-labelledby="pagesDropdown">
                 <a class="dropdown-item border-0 transition-link" href=" {% url 'logout' %}"> <i class="fas fa-user me-1 text-gray fw-normal"></i>Logout</a>
                 <a class="dropdown-item border-0 transition-link" href="shop.html"><i class="bi bi-calendar-heart"></i>My Orders</a>
-                <a class="dropdown-item border-0 transition-link" href="detail.html" ><i class="bi bi-bag-check"></i>My Cart</a>
+                <a class="dropdown-item border-0 transition-link" href="{% url 'cart' %}" ><i class="bi bi-bag-check"></i>My Cart</a>
               </div>
             </li>
             
