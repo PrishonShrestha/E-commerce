@@ -9,7 +9,8 @@ from django.http import JsonResponse
 from user_mgmt.decorators import unauthenticated_user
 
 import json
-from django.db.models import Q
+from django.db.models import Count, Q
+
 
 def homePage(request):
     category = Category.objects.all()[:3]
@@ -94,7 +95,7 @@ def updateProduct(request):
 @login_required
 def checkoutPage(request, o_id):
     orderID = Order.objects.get(id=o_id)
-
+    
     form = ShippingDetailsForm
     orderForm = UpdateOrderForm(instance=orderID)
     
@@ -104,14 +105,14 @@ def checkoutPage(request, o_id):
         form = ShippingDetailsForm(request.POST)
         orderForm = UpdateOrderForm(request.POST, instance=orderID)
         
-
+        
         if form.is_valid() and orderForm.is_valid():
             form.save()
             orderForm.save()
-            print("hello")
+            # print("hello")
             
 
-            # return redirect('home')
+            return redirect('home')
         # print('Success')
         
 
@@ -124,5 +125,17 @@ def checkoutPage(request, o_id):
 
     context = {'products':products, 'order':order, 'form':form, 'orderForm':orderForm}
     return render(request, 'pages/checkout.html', context)
+
+
+
+def myOrdersPage(request, c_id):
+
+    orders = Order.objects.filter(Q(customer_id=c_id) & Q(o_placed=True) & ~Q(o_status="Delivered"))
+    
+    # product = orders.orderproduct_set.all()
+    print(orders)
+    
+    context={'orders':orders}
+    return render(request, 'pages/my-orders.html', context)
     
 
