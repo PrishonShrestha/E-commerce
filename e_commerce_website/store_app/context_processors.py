@@ -7,7 +7,7 @@ def total_cart_products(request):
     if request.user.is_authenticated:
         customer = request.user.id
         try:
-            order = Order.objects.get(customer=customer)
+            order = Order.objects.get(customer=customer, o_placed=False)
             if order:
                 order_products = OrderProduct.objects.filter(order=order)
                 quantity = sum([product.quantity for product in order_products])

@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+from store_app.forms import ShippingDetailsForm, UpdateOrderForm
 from .models import Order, OrderProduct, ShippingDetails
 from manage_store.models import Category, Product
 from django.contrib.auth.decorators import login_required, permission_required
@@ -7,6 +9,7 @@ from django.http import JsonResponse
 from user_mgmt.decorators import unauthenticated_user
 
 import json
+from django.db.models import Q
 
 def homePage(request):
     category = Category.objects.all()[:3]
@@ -44,8 +47,11 @@ def cartPage(request):
     if request.user.is_authenticated:
         customer = request.user.id
         order, created = Order.objects.get_or_create(customer_id = customer, o_placed=False)
+        #order, created = Order.objects.get_or_create(Q(customer_id = customer) & Q(o_placed=False))
         products = order.orderproduct_set.all()
-        #print(products)
+        print(order)
+        print(products)
+
     else:
         products = []
         order = {'get_cart_total':0, 'get_cart_products':0}
@@ -55,21 +61,7 @@ def cartPage(request):
     return render(request, 'pages/cart.html', context)
 
 
-def checkoutPage(request):
-    if request.user.is_authenticated:
-        customer = request.user.id
-        order, created = Order.objects.get_or_create(customer_id = customer, o_placed=False)
-        products = order.orderproduct_set.all()
-    else:
-        products = []
-        order = {'get_cart_total':0, 'get_cart_products':0}
-    #print(products)
-
-    context = {'products':products, 'order':order}
-    return render(request, 'pages/checkout.html', context)
-    
-
-
+# Update cart products
 def updateProduct(request):
     data = json.loads(request.body)
     productId = data['productId']
@@ -81,6 +73,7 @@ def updateProduct(request):
     customer = request.user.id
     product = Product.objects.get(id=productId)
     order, created = Order.objects.get_or_create(customer_id = customer, o_placed=False)
+    #order, created = Order.objects.get_or_create(Q(customer_id = customer) & Q(o_placed=False))
     
     orderProduct, created = OrderProduct.objects.get_or_create(order=order, product=product)
     
@@ -95,5 +88,41 @@ def updateProduct(request):
         orderProduct.delete()
 
     return JsonResponse('Item was added', safe=False)
+
+
+#Checkout page
+@login_required
+def checkoutPage(request, o_id):
+    orderID = Order.objects.get(id=o_id)
+
+    form = ShippingDetailsForm
+    orderForm = UpdateOrderForm(instance=orderID)
+    
+
+
+    if request.method == "POST":
+        form = ShippingDetailsForm(request.POST)
+        orderForm = UpdateOrderForm(request.POST, instance=orderID)
+        
+
+        if form.is_valid() and orderForm.is_valid():
+            form.save()
+            orderForm.save()
+            print("hello")
+            
+
+            # return redirect('home')
+        # print('Success')
+        
+
+    customer = request.user.id
+    print(customer)
+    order, created = Order.objects.get_or_create(customer_id = customer, o_placed=False)
+    #order, created = Order.objects.get_or_create(Q(customer_id = customer) & Q(o_placed=False))
+    products = order.orderproduct_set.all()
+
+
+    context = {'products':products, 'order':order, 'form':form, 'orderForm':orderForm}
+    return render(request, 'pages/checkout.html', context)
     
 

@@ -186,7 +186,7 @@
                       </ul>
                     </div>
                   </div>
-                  <h6> <a class="reset-anchor" href="detail.html">{{product.p_name}}</a></h6>
+                  <h6> <a class="reset-anchor" href="{% url 'product-detail' product.id %}">{{product.p_name}}</a></h6>
                   <p class="small text-muted">${{product.p_price}}</p>
                 </div>
               </div>

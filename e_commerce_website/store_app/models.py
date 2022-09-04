@@ -12,8 +12,8 @@ STATUS_CHOICES = (
 )
 
 class Order(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    o_date = models.DateTimeField(auto_now_add=True)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    o_date = models.DateTimeField(auto_now=True)
     o_status = models.CharField(max_length=100, choices=STATUS_CHOICES, default="Pending")
     o_placed = models.BooleanField(default=False, null=True)
 
@@ -34,7 +34,7 @@ class Order(models.Model):
 
 
 class OrderProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True, blank=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0, null=True, blank=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
@@ -48,7 +48,7 @@ class OrderProduct(models.Model):
         return total
 
 class ShippingDetails(models.Model):
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, blank=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
     s_full_name = models.CharField(max_length=100)
     s_email = models.EmailField(max_length=100)
     s_contact = models.CharField(max_length=20)
@@ -56,5 +56,4 @@ class ShippingDetails(models.Model):
 
     def __str__(self):
         return self.s_full_name
-
-
+        

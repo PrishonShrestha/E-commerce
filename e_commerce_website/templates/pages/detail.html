@@ -99,7 +99,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-3 pl-sm-0"><a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="cart.html">Add to cart</a></div>
+                {% comment %} <div class="col-sm-3 pl-sm-0"><a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="cart.html">Add to cart</a></div> {% endcomment %}
+                <div class="col-sm-3 pl-sm-0"><button data-product={{pd.id}} data-action="add" class="btn btn-sm btn-dark update-cart" >Add to cart</button></div>
               </div><a class="text-dark p-0 mb-4 d-inline-block" href="#!"><i class="far fa-heart me-2"></i>Add to wish list</a><br>
               <ul class="list-unstyled small d-inline-block">
                 <li class="px-3 py-2 mb-1 bg-white"><strong class="text-uppercase">Code:</strong><span class="ms-2 text-muted">{{pd.p_code}}</span></li>
@@ -166,16 +167,16 @@
             {% for rp in related_products %}
             <div class="col-lg-3 col-sm-6">
               <div class="product text-center skel-loader">
-                <div class="d-block mb-3 position-relative"><a class="d-block" href="detail.html"><img class="img-fluid w-100" src="{{rp.p_image.url}}" alt="..."></a>
+                <div class="d-block mb-3 position-relative"><a class="d-block" href="{% url 'product-detail' rp.id %}"><img class="img-fluid w-100" src="{{rp.p_image.url}}" alt="..."></a>
                   <div class="product-overlay">
                     <ul class="mb-0 list-inline">
                       <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#!"><i class="far fa-heart"></i></a></li>
-                      <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="#!">Add to cart</a></li>
+                      <li class="list-inline-item m-0 p-0"><button data-product={{rp.id}} data-action="add" class="btn btn-sm btn-dark update-cart" >Add to cart</button></li>
                       <li class="list-inline-item mr-0"><a class="btn btn-sm btn-outline-dark" href="#productView" data-bs-toggle="modal"><i class="fas fa-expand"></i></a></li>
                     </ul>
                   </div>
                 </div>
-                <h6> <a class="reset-anchor" href="detail.html">{{rp.p_name}}</a></h6>
+                <h6> <a class="reset-anchor" href="{% url 'product-detail' rp.id %}">{{rp.p_name}}</a></h6>
                 <p class="small text-muted">${{rp.p_price}}</p>
               </div>
             </div>
