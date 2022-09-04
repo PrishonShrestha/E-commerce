@@ -26,4 +26,8 @@ urlpatterns = [
     path('', include('manage_store.urls'), name='user_mgmt'),
     path('', include('store_app.urls'), name='store_app'),
 
+    ##API
+    path('',include('rest_framework.urls'), name='rest_framework'),
+    path('api/', include('api.urls'), name='manage_api'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
