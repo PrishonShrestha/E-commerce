@@ -1,0 +1,58 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block title %}Orders{% endblock title %}
+
+{% block content %}
+
+<div class='row justify-content-md-center'>
+    <div class="col-md-8 mb-4">
+      <h1>Manage Orders</h1>
+      <br>
+  
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Customer</th>
+
+            <th scope="col">Email</th>
+            <th scope="col">Contact</th>
+
+            <th scope="col">Actions</th>
+  
+            
+  
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <th>{{order.id}}</th>
+            <td>{{order.o_date}}</td>
+            <td>{{order.o_status}}</td>
+            <td>{{order.customer.first_name}} {{order.customer.last_name}}</td>
+            <td>{{shipping.s_email}}</td>
+            <td>{{shipping.s_full_name}}</td>
+
+
+              <td> 
+                <a href='{% url 'update-status' order.id %}'><button type='button' class="btn btn-success">Update</button> </a>
+              </td>
+            
+            
+          </tr>
+          {% endfor %}
+  
+        </tbody>
+      </table>
+  
+  
+    </div>
+  </div>
+
+
+  
+{% endblock content %}

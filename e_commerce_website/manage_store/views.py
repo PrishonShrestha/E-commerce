@@ -7,9 +7,12 @@ from django.contrib.auth import get_user_model
 from user_mgmt.forms import CreateUserForm, UserUpdateForm
 
 from .forms import CreateCategoryForm, CreateProductsForm
+from store_app.forms import UpdateOrderForm
 from .models import Category, Product
-import os
+from store_app.models import Order, OrderProduct, ShippingDetails
+from django.db.models import Q
 from django.contrib.auth.models import User
+
 
 User = get_user_model()
 
@@ -109,9 +112,22 @@ def edit_products(request, p_id):
 ### Manage Customer
 @permission_required('is_staff')
 def manage_customers(request):
+    form = CreateUserForm
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('manage-customers')
     customer_list = User.objects.filter(is_staff=False).order_by('-id')
-    context = {'customers':customer_list}
+    context = {'customers':customer_list, 'form':form}
     return render(request, 'staff-pages/manage-customers.html', context)
+
+@permission_required('is_staff')
+def delete_customers(request, c_id):
+    queryset = User.objects.get(id=c_id)
+    queryset.delete()
+    return redirect('manage-customers')
 
 
 ### Manage Staffs
@@ -136,6 +152,23 @@ def delete_staffs(request, s_id):
     queryset.delete()
     return redirect('manage-staffs')
 
+@permission_required('is_staff')
+def edit_customers(request, c_id):
+    customer = User.objects.get(pk=c_id)
+
+    form = UserUpdateForm(instance=customer)
+
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=customer)
+        if form.is_valid():
+            form.save()
+            return redirect('manage-customers')
+
+
+
+    context ={'form':form, 'customer':customer}
+    return render(request,'staff-pages/edit-customers.html', context)
+
 
 ### Edit/Update staffs
 @permission_required('is_staff')
@@ -154,3 +187,36 @@ def edit_staffs(request, s_id):
 
     context ={'form':form, 'staff':staff}
     return render(request,'staff-pages/edit-staffs.html', context)
+
+
+@permission_required('is_admin')
+def manage_orders(request):
+
+    orders = Order.objects.filter(Q(o_placed=True) & ~Q(o_status="Completed")).order_by('-id')
+    # for order in orders:
+        
+    #     shipping = order.shippingdetails_set.all()
+        #print(shipping)
+            
+    #print(orders)
+    
+    
+    context={'orders':orders}
+    return render(request, 'staff-pages/orders.html', context)
+
+
+@permission_required('is_staff')
+def update_status(request, o_id):
+    order = Order.objects.get(id=o_id)
+
+    form = UpdateOrderForm
+
+    if request.method == "POST":
+        form = UpdateOrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('orders')
+
+
+    context = {'order':order}
+    return render(request, 'staff-pages/update-orders.html', context)

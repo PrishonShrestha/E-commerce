@@ -39,7 +39,7 @@
           <th scope="col">Gender</th>
           <th scope="col">Email</th>
           <th scope="col">Contact</th>
-          <th scope="col">Status</th>
+          <th scope="col">Acive Status</th>
           <th scope="col">Actions</th>
 
           
@@ -61,10 +61,10 @@
             <td>{{customer.is_active}}</td>
 
             <td>
-                <a href="#">
+                <a href="{% url 'edit-customers' customer.id %}">
                     <button type="button" class="btn btn-success">Edit</button> 
                 </a>
-                <a href="#">
+                <a href="{% url 'delete-customers' customer.id %}">
                     <button type="button"class="btn btn-danger">Delete</button>
                 </a>
 
@@ -108,43 +108,67 @@
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
-                  <label for="p_name">Product Name</label>
-                  <input type="text" class="form-control" id="exampleFormControlInput1" name="p_name">
+                  <label for="p_name">First Name</label>
+                  <input type="text" class="form-control" id="exampleFormControlInput1" name="first_name">
                 </div>
                 <div class="form-group">
-                    <label for="p_code">Product Code</label>
-                    <input type="text" class="form-control" id="exampleFormControlInput1" name="p_code">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="last_name">
                 </div>
                 <div class="form-group">
-                    <label for="p_description">Product Description</label>
+                    <label for="usernmae">Username</label>
                     {% comment %} <input type="text" class="form-control" id="exampleFormControlInput1" name="p_description"> {% endcomment %}
-                    <textarea class="form-control" id="exampleFormControlTextarea1" name="p_description" rows="3"></textarea>
+                    <input class="form-control" id="exampleFormControlTextarea1" name="username" rows="3"></input>
                 </div>
                 <div class="form-group">
-                    <label for="p_image" class="form-label">Product Image</label>
-                    <input required name="p_image" multiple class="form-control" type="file" id="formFile" >
+  
+                    <h6 class="mb-2 pb-1">Gender: </h6>
+  
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="femaleGender"
+                        value="F" checked />
+                      <label class="form-check-label" for="femaleGender">Female</label>
+                    </div>
+  
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="maleGender"
+                        value="M" />
+                      <label class="form-check-label" for="maleGender">Male</label>
+                    </div>
+  
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="otherGender"
+                        value="O" />
+                      <label class="form-check-label" for="otherGender">Other</label>
+                    </div>
+  
+                  </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="email" >
                 </div>
                 <div class="form-group">
-                    <label for="p_stock">Product Stock</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" name="p_stock" placeholder="Enter number">
+                    <label for="contact">Contact</label>
+                    <input type="text" class="form-control" id="exampleFormControlInput1" name="contact" >
                 </div>
                 <div class="form-group">
-                    <label for="p_price">Product Price ($)</label>
-                    <input type="number" class="form-control" id="exampleFormControlInput1" name="p_price" placeholder="Enter price in number">
+                    <label for="password1">Password</label>
+                    <input type="password" class="form-control" id="exampleFormControlInput1" name="password1" >
                 </div>
                 <div class="form-group">
-                    <label for="p_category">Product Category</label>
-                    <select class="form-select" name="p_category" aria-label="Default select example">
-                        <option selected>Select category</option>
-                        {% for p_category in category %}
-                        <option value="{{p_category.pk}}">{{p_category.c_name}}</option>
-                        {% endfor %}
-                        
-                    </select>
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" class="form-control" id="exampleFormControlInput1" name="password2" >
                 </div>
+
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="is_staff" value="False" readonly='readonly' hidden>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="is_superuser" value="False" readonly='readonly' hidden>
+
+
+                
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Product</button>
+                    <button type="submit" class="btn btn-primary">Register Staff</button>
                 </div> 
                 
 

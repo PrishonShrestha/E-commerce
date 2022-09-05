@@ -1,0 +1,41 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class='row justify-content-md-center'>
+    <div class="col-md-6 mb-4">
+        <h1> Update status </h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="o_status">Order Status</label>
+                <select class="form-select" name="o_status" aria-label="Default select example" >
+                    <option selected>{{order.o_status}}</option>
+                    <option value="Pending">Pending</option> 
+                    <option value="Accepted">Accepted</option> 
+                    <option value="Packed">Packed</option> 
+                    <option value="On The Way">On The Way</option> 
+                    <option value="Delivered">Delivered</option> 
+                    <option value="Cancelled">Cancelled</option> 
+                    
+                    
+                </select>
+            </div>
+            <div class="float-right">
+                <a href="">
+                    <button type="submit" class="btn btn-primary">Confirm update</button>
+                </a>
+                <a href="{% url 'orders' %}">
+                    <button type="button" class="btn btn-secondary">Back</button>
+                </a>
+            </div>
+            
+        </form>
+        <br>
+        
+        {{form.errors}}
+    </div>
+</div> 
+
+
+{% endblock content %}
